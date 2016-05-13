@@ -1,3 +1,5 @@
+# waigo-admin
+
 This [waigo](http://waigojs.com) plugin provides an Administration interface 
 for your Waigo app:
 
