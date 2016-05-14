@@ -1,3 +1,18 @@
+mixin adminMenuItems(mobile)
+  if mobile
+    - each item in adminMenu
+      li
+        a(href=item.path, title=item.label) #{item.label}
+
+  if currentUser
+    li
+      a(href="/user/logout", title="Logout")
+        if mobile
+          span Logout
+        else
+          i.fa.fa-sign-out
+
+
 doctype html
 html
   head
@@ -5,8 +20,8 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no")
 
     // styles
-    link(rel="stylesheet", href=staticUrl('waigo-admin:/admin-vendor.css'))
-    link(rel="stylesheet", href=staticUrl('waigo-admin:/admin.css'))
+    link(rel="stylesheet", href=staticUrl('waigo-admin:/css/admin-vendor.css'))
+    link(rel="stylesheet", href=staticUrl('waigo-admin:/css/admin.css'))
 
     title Admin dashboard
 
@@ -16,21 +31,17 @@ html
         nav
           .nav-wrapper
             a.brand-logo(href="/") Admin
-            a.button-collapse(href="#", data-activates="mobile-menu")
+            a.button-collapse.side-nav-button(href="#", data-activates="mobile-menu")
               i.mdi-navigation-menu
-            ul#nav-mobile.right.hide-on-med-and-down
-              li
-                a(href="/admin", title="Admin")
-                  i.fa.fa-gears
-              if currentUser
-                li
-                  a(href="/user/logout", title="Logout")
-                    i.fa.fa-sign-out
+            ul.right.hide-on-med-and-down
+              +adminMenuItems()
+            ul#mobile-menu.side-nav
+              +adminMenuItems(true)
 
     main#admin_container
       .row
         #admin_menu.col.s2
-          .collection
+          .collection.hide-on-med-and-down
             - each item in adminMenu
               - var className = 'collection-item ' + (matchesCurrentUrl(item.path) ? 'active': '');
               a(class=className, href=item.path) #{item.label}
@@ -38,6 +49,6 @@ html
           block main_content
 
 
-    script(type="text/javascript" src=staticUrl('waigo-admin:/admin-vendor.js'))
-    script(type="text/javascript" src=staticUrl('waigo-admin:/admin.js'))
+    script(type="text/javascript" src=staticUrl('waigo-admin:/js/admin-vendor.js'))
+    script(type="text/javascript" src=staticUrl('waigo-admin:/js/admin.js'))
 

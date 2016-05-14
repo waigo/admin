@@ -1757,6 +1757,9 @@ main.container {
 .model-table .body tr {
   cursor: pointer;
 }
+nav ul#mobile-menu a {
+  color: #000;
+}
 main#admin_container {
   padding-top: 1em;
 }

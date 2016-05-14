@@ -57,6 +57,10 @@ config.adminMenu = [
 ];
 ```
 
+_Note: the `canAccess` key specifies the the name of the resources which the 
+user must be able to access (according to the ACL) in order to be access the 
+given page. If not provided then anyone would be able to access the given page._
+
 Ensure you have alteast one user with the `admin` role assigned and that the 
 ACL contains an entry allowing `admin` role access to the `admin` resource.
 

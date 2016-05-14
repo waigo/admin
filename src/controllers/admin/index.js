@@ -11,7 +11,7 @@ const waigo = global.waigo,
 exports.configureMenu = function*(next) {
   let user = this.currentUser;
 
-  let menu = this.app.config.adminMenu,
+  let menu = this.app.config.adminMenu || [],
     finalMenu = [];
 
   for (let item, i=0; menu.length>i; ++i) {

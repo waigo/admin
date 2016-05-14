@@ -63,11 +63,14 @@ module.exports = React.createClass({
         <div className="row">
           <div className="col m12 s12">
             <div className="row">
-              <div className="item-label col m2 s12">Schedule:</div>
-              <div className="schedule col m1 s12">{item.schedule}</div>
-              <div className="item-toggle col m9 s12">
+              <div className="item-label col m2 s12">Status:</div>
+              <div className="item-toggle col m10 s12">
                 <Switch data={item} onChange={this._updateStatus} initiallyOn={!item.disabled} />
               </div>
+            </div>
+            <div className="row">
+              <div className="item-label col m2 s12">Schedule:</div>
+              <div className="schedule col m10 s12">{item.schedule}</div>
             </div>
             <div className="row">
               <div className="item-label col m2 s12">Last run:</div>
