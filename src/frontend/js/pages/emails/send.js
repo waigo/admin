@@ -1,4 +1,5 @@
 var React = require('react');
+import { Link } from 'react-router';
 
 var Timer = require('clockmaker').Timer;
 
@@ -30,80 +31,91 @@ module.exports = React.createClass({
     users: React.PropTypes.array,
   },
 
-  getDefaultProps: function() {
-    return {
-      users: [],
-    };
-  },
-
   render: function() { 
     var numUsers = this.props.users.length;
 
+    let content = null;
+
     if (!numUsers) {
-      return (
+      content = (
         <em>Please select some users to send to.</em>
       );
-    }
+    } else {
+      let bracketsSyntax = '{{...}}';
 
-    var bracketsSyntax = '{{...}}';
+      let tips = (
+        <p className="tips">
+          NOTE: All app-level locals as well 
+          as <code>recipient</code> are available as template variables. 
+          Use <code>{bracketsSyntax}</code> syntax to insert.
+        </p>
+      );
 
-    var tips = (
-      <p className="tips">
-        NOTE: All app-level locals as well 
-        as <code>recipient</code> are available as template variables. 
-        Use <code>{bracketsSyntax}</code> syntax to insert.
-      </p>
-    );
+      let loadingAnim = null;
+      if (this.state.loading) {
+        loadingAnim = (<Loader size="small" inline={true} />);
+      }
 
-    var loadingAnim = null;
-    if (this.state.loading) {
-      loadingAnim = (<Loader size="small" inline={true} />);
+      content = (
+        <div>
+          {tips}
+          <div className="row">
+            <div className="col m6 s12 fields">
+              <h2>Markdown</h2>
+              <input type="text" 
+                  className="subject" 
+                  onKeyUp={this._onSubjectChange} 
+                  placeholder="Subject"
+                  ref="subject" />
+              <TextEditor height="400px" 
+                  onChange={this._onBodyChange} 
+                  ref="body" />
+            </div>
+            <div className="col m6 m-offset1 s12 preview">
+              <h2>
+                <span>Preview</span>
+                {loadingAnim}
+              </h2>
+              {RenderUtils.buildError(this.state.error)}
+              <input type="text" readonly value={this.state.subjectPreview} placeholder="Subject preview..." />
+              <div className="body"
+                dangerouslySetInnerHTML={{__html: this.state.bodyPreview}} />
+            </div>          
+          </div>
+          {this._buildSendButton()}
+        </div>
+      );
     }
 
     return (
       <form className="content-send">
-        {tips}
-        <div className="row">
-          <div className="col m6 s12 fields">
-            <h2>Markdown</h2>
-            <input type="text" 
-                className="subject" 
-                onKeyUp={this._onSubjectChange} 
-                placeholder="Subject"
-                ref="subject" />
-            <TextEditor height="400px" 
-                onChange={this._onBodyChange} 
-                ref="body" />
-          </div>
-          <div className="col m6 m-offset1 s12 preview">
-            <h2>
-              <span>Preview</span>
-              {loadingAnim}
-            </h2>
-            {RenderUtils.buildError(this.state.error)}
-            <input type="text" readonly value={this.state.subjectPreview} placeholder="Subject preview..." />
-            <div className="body"
-              dangerouslySetInnerHTML={{__html: this.state.bodyPreview}} />
-          </div>          
-        </div>
-        {this._buildSendButton()}
+        <h2>
+          <Link to="/">{`${numUsers} ${1 === numUsers ? 'user' : 'users'}`}</Link> / send
+        </h2>
+        {content}
       </form>
     );
   },
 
 
   _buildSendButton: function() {
-    var numUsers = this.props.users.length;
-
-    var sendButton = null,
+    let sendButton = null,
       sendAnim = null,
-      sendBtnLabel = `Send to ${numUsers} ${1 == numUsers ? 'user' : 'users'}`;
+      sendBtnLabel = `Send email!`;
 
     if (this.state.sending) {
       sendButton = (<Button label={sendBtnLabel} disabled />);
       sendAnim = (<Loader inline={true} />);
     } else {
-      sendButton = <Button label={sendBtnLabel} onClick={this._onSend} />;
+      const canSubmit = 
+        !!this.state.subject.length
+        && !!this.state.subjectPreview.length 
+        && !!this.state.body.length
+        && !!this.state.bodyPreview.length;
+
+      sendButton = (
+        <Button label={sendBtnLabel} onClick={this._onSend} disabled={!canSubmit}/>
+      );
     }
 
     return (
@@ -153,6 +165,8 @@ module.exports = React.createClass({
     self._fetchPreviewTimer = Timer(function() {
 
       self.setState({
+        subjectPreview: '',
+        bodyPreview: '',
         loading: true,
         error: null,
       });

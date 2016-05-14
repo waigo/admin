@@ -1,21 +1,21 @@
+import { IndexRoute, Route, Router, hashHistory } from 'react-router';
+
 var React = require('react');
 const ReactDOM = require('react-dom');
 
-var _ = require('lodash');
-
-var UsersPage = require('./users');
-var SendPage = require('./send');
+var SelectUsers = require('./users');
+var SendMail = require('./send');
 
 
 exports.init = function(rootElem) {
 
-  var App = React.createClass({
+  const App = React.createClass({
     getInitialState: function() {
       return {
         users: [],
-        template: '',
       };
     },
+
     addUser: function(user) {
       var existing = _.find(this.state.users, function(u) {
         return u.id === user.id;
@@ -27,6 +27,7 @@ exports.init = function(rootElem) {
         });
       }
     },
+
     removeUser: function(userOrId) {
       if (userOrId.id) {
         userOrId = userOrId.id;
@@ -40,40 +41,38 @@ exports.init = function(rootElem) {
         users: newUsers
       });
     },
+
     clearUsers: function() {
       this.setState({
         users: []
       });
     },
-    render () {
+
+    render: function() {
+      let children = React.Children.map(this.props.children, (child) => {
+        return React.cloneElement(child, {
+          users: this.state.users,
+          addUser: this.addUser,
+          removeUser: this.removeUser,
+          clearUsers: this.clearUsers,
+        });
+      });
+
       return (
-        <div className="row page-emails">
-          <div className="col s12">
-            <ul className="tabs">
-              <li className="tab col s3"><a className="active" href="#users"><span class="badge">1.</span> Select users</a></li>
-              <li className="tab col s3"><a href="#send"><span class="badge">2.</span> Send</a></li>
-            </ul>
-          </div>
-          <section className="tab-content">
-            <div id="users" className="col s12">
-              <UsersPage 
-                users={this.state.users} 
-                addUser={this.addUser} 
-                removeUser={this.removeUser}
-                clearUsers={this.clearUsers} />
-            </div>
-            <div id="send" className="col s12">
-              <SendPage 
-                users={this.state.users} />
-            </div>
-          </section>
+        <div className="page-emails">
+          {children}
         </div>
-      )
+      );
     }
   });
 
-  
-  ReactDOM.render(<App />, rootElem);
+  ReactDOM.render((
+    <Router history={hashHistory}>
+      <Route path="/" component={App}>
+        <IndexRoute component={SelectUsers} />
+        <Route path="/send" component={SendMail} />
+      </Route>
+    </Router>
+  ), rootElem);
+
 };
-
-
