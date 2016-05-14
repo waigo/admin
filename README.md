@@ -1,11 +1,11 @@
 # waigo-admin
 
-This [waigo](http://waigojs.com) plugin provides an Administration interface 
-for your Waigo app:
+The **official* [waigo](http://waigojs.com) plugin which provides an 
+Administration interface for your Waigo app:
 
-* See cron job info and run them whenever you want
-* Test out all of your app's mapped routes
-* Send an email to users (raw query filtering supported)
+* See info on cron jobs and run them whenever you want
+* Test out all of your app's routes (incl. POST, PUT, etc)
+* Send an email to a selection of users (raw query filtering supported)
 * Browse, create and edit database data (raw query filtering supported)
 
 All routes are placed under the `/admin` path and access is controlled via the 
