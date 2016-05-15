@@ -1,6 +1,6 @@
 mixin adminMenuItems(mobile)
   if mobile
-    - each item in adminMenu
+    each item in adminMenu
       li
         a(href=item.path, title=item.label) #{item.label}
 
@@ -42,7 +42,7 @@ html
       .row
         #admin_menu.col.s2
           .collection.hide-on-med-and-down
-            - each item in adminMenu
+            each item in adminMenu
               - var className = 'collection-item ' + (matchesCurrentUrl(item.path) ? 'active': '');
               a(class=className, href=item.path) #{item.label}
         #admin_content.col.s10
