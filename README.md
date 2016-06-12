@@ -20,7 +20,7 @@ Waigo's built-in model layer, including the built-in `User` model.
 ## Installation
 
 ```bash
-$ npm install waigo-admin
+$ npm install waigo-plugin-admin
 ```
 
 ## Usage instructions
