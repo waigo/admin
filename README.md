@@ -1,6 +1,6 @@
-# waigo-admin
+# waigo-plugin-admin
 
-The **official* [waigo](http://waigojs.com) plugin which provides an 
+The *official* [waigo](http://waigojs.com) plugin which provides an 
 Administration interface for your Waigo app:
 
 * See info on cron jobs and run them whenever you want
