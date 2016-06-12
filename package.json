@@ -1,6 +1,6 @@
 {
   "name": "waigo-plugin-admin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Administration UI for Waigo apps (plugin)",
   "main": "index.js",
   "repository": {
