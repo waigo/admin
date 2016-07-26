@@ -7,7 +7,7 @@ const waigo = global.waigo,
 
 exports.index = function*() {
   yield this.render('admin/models', {
-    models: _.keys(this.app.models),
+    models: _.keys(this.App.models),
   });
 };
 
@@ -171,7 +171,7 @@ exports.docCreate = function*() {
   let newDoc = yield model.insert(doc);
 
   // record activity
-  this.app.events.emit('record', 'insert_doc', this.currentUser, {
+  this.App.emit('record', 'insert_doc', this.currentUser, {
     model: modelName,
     id: newDoc.id
   });
@@ -210,7 +210,7 @@ exports.docUpdate = function*() {
   yield model.rawUpdate(rowId, doc);
 
   // record activity
-  this.app.events.emit('record', 'update_doc', this.currentUser, {
+  this.App.emit('record', 'update_doc', this.currentUser, {
     model: modelName,
     id: rowId
   });
@@ -235,7 +235,7 @@ exports.docDelete = function*() {
   yield model.rawRemove(rowId);
 
   // record activity
-  this.app.events.emit('record', 'delete_doc', this.currentUser, {
+  this.App.emit('record', 'delete_doc', this.currentUser, {
     model: modelName,
     id: rowId
   });

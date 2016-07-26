@@ -15,15 +15,15 @@ exports.render = function*() {
     subject = this.request.body.subject,
     userId = this.request.body.user;
 
-  this.app.logger.debug('Render email template');
+  this.App.logger.debug('Render email template');
 
-  let user = yield this.app.models.User.get(userId);
+  let user = yield this.App.models.User.get(userId);
 
   if (!user) {
     this.throw('User not found', 404);
   }
 
-  let output = yield this.app.mailer.render({
+  let output = yield this.App.mailer.render({
     to: user,
     subject: subject,
     body: body,
@@ -41,15 +41,15 @@ exports.send = function*() {
     subject = this.request.body.subject,
     userIds = this.request.body.users;
 
-  this.app.logger.debug('Send email to users', userIds);
+  this.App.logger.debug('Send email to users', userIds);
 
-  let users = yield this.app.models.User.findWithIds(userIds);
+  let users = yield this.App.models.User.findWithIds(userIds);
 
   if (users.length !== userIds.length) {
     this.throw(`${userIds.length - users.length} users could not be found`, 404);
   }
 
-  yield this.app.mailer.send({
+  yield this.App.mailer.send({
     to: users,
     subject: subject,
     body: body,

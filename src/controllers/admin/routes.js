@@ -6,7 +6,7 @@ const waigo = global.waigo,
 
 
 exports.index = function*() {
-  let routes = this.app.routes.all;
+  let routes = this.App.routes.all;
 
   yield this.render('admin/routes', {
     routes: _.map(routes, function(route) {

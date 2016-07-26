@@ -7,7 +7,7 @@ const waigo = global.waigo,
 
 exports.index = function*() {
   yield this.render('admin/cron', {
-    tasks: this.app.cron
+    tasks: this.App.cron
   });
 };
 
@@ -17,7 +17,7 @@ exports.index = function*() {
 exports.run = function*() {
   let id = this.request.body.id;
 
-  let task = this.app.cron[id];
+  let task = this.App.cron[id];
 
   yield task.runNow();
 
@@ -35,7 +35,7 @@ exports.updateStatus = function*() {
 
   active = ('true' === ('' + active));
 
-  let task = this.app.cron[id];
+  let task = this.App.cron[id];
 
   yield task.setActive(active);
 
